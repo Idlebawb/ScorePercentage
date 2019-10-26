@@ -1,7 +1,7 @@
 # ScorePercentage
 Replaces the "Rank" in Level End Screen with score percentage and adds score percentage to the "Highscore" in the Level Selection Menu.
 
-**For now the calculation only works correctly when used without modifiers.**
+**Warning: Percentage on menu screen will be incorrect when your highscore was set using modifiers, since Beat Saber only saves score without modifier information.**
 
 Examples:
 Level End Screen
