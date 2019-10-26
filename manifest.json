@@ -1,10 +1,10 @@
 ﻿{
   "$schema": "https://raw.githubusercontent.com/nike4613/ModSaber-MetadataFileSchema/master/Schema.json",
   "author": "Idlebob",
-  "description": "",
-  "gameVersion": "1.4.0",
-  "id": null,
+  "description": "Adds Score as Percentage to Level-End Screen and Menu",
+  "gameVersion": "1.4.2",
+  "id": "ScorePercentage",
   "name": "ScorePercentage",
-  "version": "0.0.1-alpha",
+  "version": "1.0.0",
   "features": []
 }
