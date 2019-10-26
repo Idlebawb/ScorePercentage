@@ -19,9 +19,9 @@ namespace ScorePercentage.HarmonyPatches
             {
 
                 maxScore = ScorePercentageCommon.calculateMaxScore(__instance._difficultyBeatmap.beatmapData.notesCount);
-                resultPercentage = ScorePercentageCommon.calculatePercentage(maxScore, __instance._levelCompletionResults.modifiedScore);
+                resultPercentage = ScorePercentageCommon.calculatePercentage(maxScore, __instance._levelCompletionResults.rawScore);
 
-                //__instance._rankText.text = "<size=40%>" + resultPercentage.ToString() +"%";
+                //disable wrapping and autosize. format string and overwite rankText
                 __instance._rankText.autoSizeTextContainer = false;
                 __instance._rankText.enableWordWrapping = false;
                 __instance._rankText.text = "<size=70%>" + resultPercentage.ToString() + "<size=50%>" +"%";
