@@ -9,6 +9,11 @@ namespace ScorePercentage.HarmonyPatches
     {
         static void Postfix(ref StandardLevelDetailViewPatches __instance)
         {
+            //Only run calculation, if it isn't disabled
+            if (!Settings.Config.EnableMenuHighscore)
+            {
+                return;
+            }
 
             if (__instance._playerStatsContainer)
             {

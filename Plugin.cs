@@ -10,6 +10,7 @@ namespace ScorePercentage
 {
     public class Plugin : IBeatSaberPlugin
     {
+        public static string PluginName => "ScorePercentage";
         internal static Ref<PluginConfig> config;
         internal static IConfigProvider configProvider;
 
@@ -31,7 +32,9 @@ namespace ScorePercentage
         public void OnApplicationStart()
         {
             Logger.log.Debug("Starting ScorePercentage Plugin");
+            Settings.Config.LoadConfig();
             harmony = HarmonyInstance.Create("com.Idlebob.BeatSaber.ScorePercentage");
+            //Patch Classes
             harmony.PatchAll(System.Reflection.Assembly.GetExecutingAssembly());
         }
 
