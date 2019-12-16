@@ -1,4 +1,5 @@
 ﻿using Harmony;
+using TMPro;
 
 
 namespace ScorePercentage.HarmonyPatches
@@ -41,7 +42,20 @@ namespace ScorePercentage.HarmonyPatches
                 //disable wrapping and autosize. format string and overwite rankText
                 __instance._rankText.autoSizeTextContainer = false;
                 __instance._rankText.enableWordWrapping = false;
-                __instance._rankText.text = "<size=70%>" + resultPercentage.ToString() + "<size=50%>" +"%";
+
+                // Add Average Cut Score, if enabled
+                if (Settings.Config.EnableAvarageCutScore)
+                {
+                    int averageCutScore = __instance._levelCompletionResults.averageCutScore;
+                    __instance._rankText.text =
+                        "<line-height=45%><size=70%>" + resultPercentage.ToString() + "<size=50%>" + "%" + "\n"
+                        + "<size=60%>" + averageCutScore.ToString() + "<size=40%> / <size=60%>115";
+                }
+                else
+                {
+                    __instance._rankText.text = "<size=70%>" + resultPercentage.ToString() + "<size=50%>" + "%";
+                }
+                
             }
         }
         

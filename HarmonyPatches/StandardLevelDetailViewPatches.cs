@@ -7,6 +7,7 @@ namespace ScorePercentage.HarmonyPatches
     [HarmonyPatch("RefreshContent", MethodType.Normal)]
     class StandardLevelDetailViewPatches : StandardLevelDetailView
     {
+        
         static void Postfix(ref StandardLevelDetailViewPatches __instance)
         {
             //Only run calculation, if it isn't disabled
@@ -41,3 +42,4 @@ namespace ScorePercentage.HarmonyPatches
         
     }
 }
+
