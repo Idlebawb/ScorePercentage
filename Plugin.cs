@@ -13,8 +13,8 @@ namespace ScorePercentage
         public static string PluginName => "ScorePercentage";
         internal static Ref<PluginConfig> config;
         internal static IConfigProvider configProvider;
-
         internal static HarmonyInstance harmony;
+        internal static ScorePercentageCommon scorePercentageCommon;
 
         public void Init(IPALogger logger, [Config.Prefer("json")] IConfigProvider cfgProvider)
         {
@@ -33,6 +33,7 @@ namespace ScorePercentage
         {
             Logger.log.Debug("Starting ScorePercentage Plugin");
             Settings.Config.LoadConfig();
+            scorePercentageCommon = new ScorePercentageCommon();
             harmony = HarmonyInstance.Create("com.Idlebob.BeatSaber.ScorePercentage");
             //Patch Classes
             harmony.PatchAll(System.Reflection.Assembly.GetExecutingAssembly());

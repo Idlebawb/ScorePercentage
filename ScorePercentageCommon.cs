@@ -4,6 +4,10 @@ namespace ScorePercentage
 {
     class ScorePercentageCommon
     {
+
+        public int currentScore = 0;
+        public double currentPercentage = 0;
+
         public static int calculateMaxScore(int blockCount)
         {
             int maxScore;
@@ -34,5 +38,9 @@ namespace ScorePercentage
             return resultPercentage;
         }
 
+
+        
     }
+
+
 }
