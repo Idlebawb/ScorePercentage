@@ -76,7 +76,7 @@ namespace ScorePercentage.HarmonyPatches
                             percentageDifferenceColor = colorNegative;
                             positiveIndicator = "";
                         }
-                        rankTextLine2 = "\n<color=" + positiveIndicator + percentageDifferenceColor + "><size=40%>" + percentageDifference.ToString() + "<size=30%>%";
+                        rankTextLine2 = "\n<color=" + percentageDifferenceColor + "><size=40%>" + positiveIndicator + percentageDifference.ToString() + "<size=30%>%";
                     }
                     __instance._newHighScoreText.SetActive(false);
                 }
@@ -108,7 +108,7 @@ namespace ScorePercentage.HarmonyPatches
                         //Build new ScoreText string
                         __instance._scoreText.text =
                                 "<line-height=30%><size=60%>" + ScoreFormatter.Format(modifiedScore) + "\n"
-                                + "<size=40%><color=" + positiveIndicator + scoreDifferenceColor + "><size=40%>" + scoreDifference;
+                                + "<size=40%><color=" + scoreDifferenceColor + "><size=40%>" + positiveIndicator + scoreDifference;
                     }
                     //Don't change text at all, if no previous score.
                     /*
