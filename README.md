@@ -24,7 +24,7 @@ This enables replacing the "Rank" label on the result screen (default: true):
 
 `"EnableLevelEndRank": true`
 
-This disables adding percentage to your score in the menu (default:true):
+This enables adding percentage to your score in the menu (default:true):
 
 `"EnableMenuHighscore": true`
 
@@ -38,7 +38,7 @@ This enables score percentage difference display on results (default: true)
 
 This enables average cut score display on results (default:false)
 
-`"EnableAvarageCutScore: false`
+`"EnableAvarageCutScore: true`
 
 AverageCutScore and ScorePercentageDifference are exclusive of each other. So if you enable both, percentage will take priority.
 
