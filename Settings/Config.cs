@@ -8,6 +8,7 @@
         public static bool EnableAvarageCutScore;
         public static bool EnableScoreDifference;
         public static bool EnableScorePercentageDifference;
+        public static bool EnableLevelFailedText;
 
         public static void LoadConfig()
         {
@@ -17,6 +18,7 @@
             EnableAvarageCutScore = Plugin.config.Value.EnableAverageCutScore;
             EnableScoreDifference = Plugin.config.Value.EnableScoreDifference;
             EnableScorePercentageDifference = Plugin.config.Value.EnableScorePercentageDifference;
+            EnableLevelFailedText = Plugin.config.Value.EnableLevelFailedText;
 
         }
         public static void SaveConfig()

@@ -1,4 +1,5 @@
-﻿using Harmony;
+﻿using System;
+using Harmony;
 
 
 namespace ScorePercentage.HarmonyPatches
@@ -21,6 +22,7 @@ namespace ScorePercentage.HarmonyPatches
             // Colors
             string colorPositive = "#00B300";
             string colorNegative = "#FF0000";
+            //Empty for negatives, "+" for positives
             string positiveIndicator = "";
 
 
@@ -42,14 +44,15 @@ namespace ScorePercentage.HarmonyPatches
                 
                 resultPercentage = ScorePercentageCommon.calculatePercentage(maxScore, resultScore);
 
-                //disable wrapping and autosize. format string and overwite rankText
+                //disable wrapping and autosize (unneccessary?)
                 __instance._rankText.autoSizeTextContainer = false;
                 __instance._rankText.enableWordWrapping = false;
 
 
-                //Percentage Only
+                //Rank Text Changes
                 if (Settings.Config.EnableLevelEndRank)
                 {
+                    //Set Percentage to first line
                     rankTextLine1 = "<line-height=30%><size=60%>" + resultPercentage.ToString() + "<size=45%>%";
                     // Add Average Cut Score to 2nd Line if enabled
                     if (Settings.Config.EnableAvarageCutScore && !Settings.Config.EnableScorePercentageDifference)
@@ -62,7 +65,7 @@ namespace ScorePercentage.HarmonyPatches
                     else if (Settings.Config.EnableScorePercentageDifference && Plugin.scorePercentageCommon.currentPercentage != 0)
                     {
                         double currentPercentage = Plugin.scorePercentageCommon.currentPercentage;
-                        double percentageDifference = resultPercentage - currentPercentage;
+                        double percentageDifference = Math.Round(resultPercentage - currentPercentage,2);
                         string percentageDifferenceColor;
                         //Better or same Score
                         if (percentageDifference >= 0)
@@ -79,7 +82,8 @@ namespace ScorePercentage.HarmonyPatches
                         rankTextLine2 = "\n<color=" + percentageDifferenceColor + "><size=40%>" + positiveIndicator + percentageDifference.ToString() + "<size=30%>%";
                     }
                     __instance._newHighScoreText.SetActive(false);
-                }
+                }//End Preparations for Changes to Rank Text
+
                 __instance._rankText.text = rankTextLine1 + rankTextLine2;
 
 
@@ -110,19 +114,24 @@ namespace ScorePercentage.HarmonyPatches
                                 "<line-height=30%><size=60%>" + ScoreFormatter.Format(modifiedScore) + "\n"
                                 + "<size=40%><color=" + scoreDifferenceColor + "><size=40%>" + positiveIndicator + scoreDifference;
                     }
-                    //Don't change text at all, if no previous score.
-                    /*
-                    else
-                    {
-                        scoreDifference = ScoreFormatter.Format(__instance._levelCompletionResults.modifiedScore);
-                    }
-                    */
 
+                }//End ScoreDifference Calculation
 
-                }
+            }//End Level Cleared
 
-            }
-        }
+            //Display Failed at, if Level was failed and EnableLevelFailedText is true
+            /*
+            else if (__instance._levelCompletionResults.levelEndStateType == LevelCompletionResults.LevelEndStateType.Failed && Settings.Config.EnableLevelFailedText)
+            {
+                TimeSpan failedTime = TimeSpan.FromSeconds(__instance._levelCompletionResults.endSongTime);
+                TimeSpan songDuration = TimeSpan.FromSeconds(__instance._levelCompletionResults.songDuration);
+                __instance._failedDifficultyText.text = 
+                    __instance._failedDifficultyText.text +
+                    "\n" +
+                    "<size=70%><color=" + colorNegative + "> Failed at: </color>" + failedTime.ToString("'mm':'ss'") + " / " + songDuration.ToString("'mm':'ss'");
+            }*/
+            
+        }//End Postfix Function
         
-    }
-}
+    }//End Class
+}//End Namespace

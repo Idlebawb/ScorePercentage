@@ -8,6 +8,7 @@
         public bool EnableAverageCutScore = false;
         public bool EnableScoreDifference = true;
         public bool EnableScorePercentageDifference = true;
+        public bool EnableLevelFailedText = true;
 
     }
 }
