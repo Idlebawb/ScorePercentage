@@ -18,7 +18,7 @@ Menu
 Every Change this mod makes can be disabled / enabled one by one to fit your preferences.
 These can be set in Beat Saber\UserData\ScorePercentage.json.
 
-Currently available Opions (as of 1.2.3):
+Currently available Options (as of 1.2.3):
 
 This enables replacing the "Rank" label on the result screen (default: true):
 
