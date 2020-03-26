@@ -1,47 +1,48 @@
 ﻿using IPA;
 using IPA.Config;
 using IPA.Utilities;
+using IPA.Config.Stores;
 using UnityEngine.SceneManagement;
-using IPALogger = IPA.Logging.Logger;
-using Harmony;
+using IPA.Logging;
+using HarmonyLib;
+using System;
 
 
 namespace ScorePercentage
 {
-    public class Plugin : IBeatSaberPlugin
+    [Plugin(RuntimeOptions.SingleStartInit)]
+    public class Plugin
     {
         public static string PluginName => "ScorePercentage";
-        internal static Ref<PluginConfig> config;
-        internal static IConfigProvider configProvider;
-        internal static HarmonyInstance harmony;
+//        internal static Ref<PluginConfig> config;
+        internal static Harmony harmony;
         internal static ScorePercentageCommon scorePercentageCommon;
+        public static Logger log { get; private set; }
 
-        public void Init(IPALogger logger, [Config.Prefer("json")] IConfigProvider cfgProvider)
+        [Init]
+        public void Init(Logger logger, Config cfgProvider)
         {
-            Logger.log = logger;
-            configProvider = cfgProvider;
+            //Logger.log = logger;
+            log = logger;
+            PluginConfig.Instance = cfgProvider.Generated<PluginConfig>();
 
-            config = cfgProvider.MakeLink<PluginConfig>((p, v) =>
-            {
-                if (v.Value == null || v.Value.RegenerateConfig)
-                    p.Store(v.Value = new PluginConfig() { RegenerateConfig = false });
-                config = v;
-            });
         }
 
+        [OnStart]
         public void OnApplicationStart()
         {
-            Logger.log.Debug("Starting ScorePercentage Plugin");
-            Settings.Config.LoadConfig();
+            log.Debug("Starting ScorePercentage Plugin");
+            //Settings.PluginConfig.LoadConfig();
             scorePercentageCommon = new ScorePercentageCommon();
-            harmony = HarmonyInstance.Create("com.Idlebob.BeatSaber.ScorePercentage");
+            harmony = new Harmony("com.Idlebob.BeatSaber.ScorePercentage");
             //Patch Classes
             harmony.PatchAll(System.Reflection.Assembly.GetExecutingAssembly());
         }
 
+        [OnExit]
         public void OnApplicationQuit()
         {
-            Logger.log.Debug("Stopping ScorePercentage Plugin");
+            log.Debug("Stopping ScorePercentage Plugin");
             harmony.UnpatchAll("com.Idlebob.BeatSaber.ScorePercentage");
         }
 
