@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+﻿using Harmony;
 
 namespace ScorePercentage.HarmonyPatches
 {
@@ -11,7 +11,7 @@ namespace ScorePercentage.HarmonyPatches
         static void Postfix(ref StandardLevelDetailViewPatches __instance)
         {
             //Only run calculation, if it isn't disabled
-            if (!PluginConfig.Instance.EnableMenuHighscore)
+            if (!Settings.Config.EnableMenuHighscore)
             {
                 return;
             }
@@ -23,7 +23,7 @@ namespace ScorePercentage.HarmonyPatches
                     __instance._playerStatsContainer.SetActive(true);
                     PlayerLevelStatsData playerLevelStatsData = __instance._playerData.GetPlayerLevelStatsData(__instance._level.levelID, __instance._selectedDifficultyBeatmap.difficulty, __instance._selectedDifficultyBeatmap.parentDifficultyBeatmapSet.beatmapCharacteristic);
                     Plugin.scorePercentageCommon.currentScore = playerLevelStatsData.highScore;
-                    if (playerLevelStatsData.validScore && PluginConfig.Instance.EnableMenuHighscore)
+                    if (playerLevelStatsData.validScore && Settings.Config.EnableMenuHighscore)
                     {
                         //calculate maximum possilble score
                         int currentDifficultyMaxScore = ScorePercentageCommon.calculateMaxScore(__instance.selectedDifficultyBeatmap.beatmapData.notesCount);

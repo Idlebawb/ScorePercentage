@@ -1,14 +1,14 @@
 ﻿namespace ScorePercentage
 {
-    public class PluginConfig
+    internal class PluginConfig
     {
-        public static PluginConfig Instance { get; set; }
-
-        public bool EnableMenuHighscore { get; set; } = true;
-        public bool EnableLevelEndRank { get; set; } = true;
-        public bool EnableAvarageCutScore { get; set; } = false;
-        public bool EnableScoreDifference { get; set; } = true;
-        public bool EnableScorePercentageDifference { get; set; } = true;
+        public bool RegenerateConfig = true;
+        public bool EnableMenuHighscore = true;
+        public bool EnableLevelEndRank = true;
+        public bool EnableAverageCutScore = false;
+        public bool EnableScoreDifference = true;
+        public bool EnableScorePercentageDifference = true;
+        public bool EnableLevelFailedText = true;
 
     }
 }

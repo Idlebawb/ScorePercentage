@@ -1,5 +1,5 @@
 ﻿using System;
-using HarmonyLib;
+using Harmony;
 
 
 namespace ScorePercentage.HarmonyPatches
@@ -50,19 +50,19 @@ namespace ScorePercentage.HarmonyPatches
 
 
                 //Rank Text Changes
-                if (PluginConfig.Instance.EnableLevelEndRank)
+                if (Settings.Config.EnableLevelEndRank)
                 {
                     //Set Percentage to first line
                     rankTextLine1 = "<line-height=30%><size=60%>" + resultPercentage.ToString() + "<size=45%>%";
                     // Add Average Cut Score to 2nd Line if enabled
-                    if (PluginConfig.Instance.EnableAvarageCutScore && !PluginConfig.Instance.EnableScorePercentageDifference)
+                    if (Settings.Config.EnableAvarageCutScore && !Settings.Config.EnableScorePercentageDifference)
                     {
                         int averageCutScore = __instance._levelCompletionResults.averageCutScore;
                         rankTextLine2 = "\n"+"<size=40%>" + averageCutScore.ToString() + "<size=30%> / <size=0%>115";
 
                     }
                     // Add Percent Difference to 2nd Line if enabled and previous Score exists
-                    else if (PluginConfig.Instance.EnableScorePercentageDifference && Plugin.scorePercentageCommon.currentPercentage != 0)
+                    else if (Settings.Config.EnableScorePercentageDifference && Plugin.scorePercentageCommon.currentPercentage != 0)
                     {
                         double currentPercentage = Plugin.scorePercentageCommon.currentPercentage;
                         double percentageDifference = Math.Round(resultPercentage - currentPercentage,2);
@@ -88,7 +88,7 @@ namespace ScorePercentage.HarmonyPatches
 
 
                 //Add ScoreDifference Calculation if enabled
-                if (PluginConfig.Instance.EnableScoreDifference)
+                if (Settings.Config.EnableScoreDifference)
                 {
                     string scoreDifference = "";
                     string scoreDifferenceColor = "";
