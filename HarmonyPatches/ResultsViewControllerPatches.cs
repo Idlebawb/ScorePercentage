@@ -119,18 +119,12 @@ namespace ScorePercentage.HarmonyPatches
 
             }//End Level Cleared
 
-            //Display Failed at, if Level was failed and EnableLevelFailedText is true
-            /*
-            else if (__instance._levelCompletionResults.levelEndStateType == LevelCompletionResults.LevelEndStateType.Failed && Settings.Config.EnableLevelFailedText)
-            {
-                TimeSpan failedTime = TimeSpan.FromSeconds(__instance._levelCompletionResults.endSongTime);
-                TimeSpan songDuration = TimeSpan.FromSeconds(__instance._levelCompletionResults.songDuration);
-                __instance._failedDifficultyText.text = 
-                    __instance._failedDifficultyText.text +
-                    "\n" +
-                    "<size=70%><color=" + colorNegative + "> Failed at: </color>" + failedTime.ToString("'mm':'ss'") + " / " + songDuration.ToString("'mm':'ss'");
-            }*/
-            
+            //Reset currentScore and currentPercentage in case next ResultScreen isn't loaded from StandardLevelDetailView
+            //Does this even do anything!?
+            Plugin.scorePercentageCommon.currentPercentage = 0;
+            Plugin.scorePercentageCommon.currentScore = 0;
+
+
         }//End Postfix Function
         
     }//End Class
