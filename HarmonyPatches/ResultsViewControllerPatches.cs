@@ -32,7 +32,7 @@ namespace ScorePercentage.HarmonyPatches
                 modifiedScore = __instance._levelCompletionResults.modifiedScore;
                 maxScore = ScorePercentageCommon.calculateMaxScore(__instance._difficultyBeatmap.beatmapData.cuttableNotesType);
                 //use modifiedScore with negative multipliers
-                if (__instance._levelCompletionResults.gameplayModifiers.noFail || (__instance._levelCompletionResults.gameplayModifiers.enabledObstacleType != GameplayModifiers.EnabledObstacleType.All) || __instance._levelCompletionResults.gameplayModifiers.noArrows || __instance._levelCompletionResults.gameplayModifiers.noBombs)
+                if (__instance._levelCompletionResults.gameplayModifiers.noFailOn0Energy || (__instance._levelCompletionResults.gameplayModifiers.enabledObstacleType != GameplayModifiers.EnabledObstacleType.All) || __instance._levelCompletionResults.gameplayModifiers.noArrows || __instance._levelCompletionResults.gameplayModifiers.noBombs)
                 {
                     resultScore = modifiedScore;
                 }
@@ -97,7 +97,7 @@ namespace ScorePercentage.HarmonyPatches
                     {
                         scoreDifference = ScoreFormatter.Format(modifiedScore - currentScore);
                         //Better Score
-                        if ((modifiedScore - currentScore) > 0)
+                        if ((modifiedScore - currentScore) >= 0)
                         {
                             scoreDifferenceColor = colorPositive;
                             positiveIndicator = "+";
