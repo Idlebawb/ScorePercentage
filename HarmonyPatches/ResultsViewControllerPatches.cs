@@ -24,15 +24,23 @@ namespace ScorePercentage.HarmonyPatches
             string colorNegative = "#FF0000";
             //Empty for negatives, "+" for positives
             string positiveIndicator = "";
-
+            
 
             //Only calculate percentage, if map was successfully cleared
             if (__instance._levelCompletionResults.levelEndStateType == LevelCompletionResults.LevelEndStateType.Cleared)
             {
                 modifiedScore = __instance._levelCompletionResults.modifiedScore;
                 maxScore = ScorePercentageCommon.calculateMaxScore(__instance._difficultyBeatmap.beatmapData.cuttableNotesType);
+
+
                 //use modifiedScore with negative multipliers
-                if (__instance._levelCompletionResults.gameplayModifiers.noFailOn0Energy || (__instance._levelCompletionResults.gameplayModifiers.enabledObstacleType != GameplayModifiers.EnabledObstacleType.All) || __instance._levelCompletionResults.gameplayModifiers.noArrows || __instance._levelCompletionResults.gameplayModifiers.noBombs)
+                if (__instance._levelCompletionResults.gameplayModifiers.noFailOn0Energy 
+                    || (__instance._levelCompletionResults.gameplayModifiers.enabledObstacleType != GameplayModifiers.EnabledObstacleType.All) 
+                    || __instance._levelCompletionResults.gameplayModifiers.noArrows 
+                    || __instance._levelCompletionResults.gameplayModifiers.noBombs
+                    || __instance._levelCompletionResults.gameplayModifiers.zenMode
+                    || __instance._levelCompletionResults.gameplayModifiers.songSpeed == GameplayModifiers.SongSpeed.Slower
+                    )
                 {
                     resultScore = modifiedScore;
                 }
@@ -53,7 +61,7 @@ namespace ScorePercentage.HarmonyPatches
                 if (PluginConfig.Instance.EnableLevelEndRank)
                 {
                     //Set Percentage to first line
-                    rankTextLine1 = "<line-height=30%><size=60%>" + resultPercentage.ToString() + "<size=45%>%";
+                    rankTextLine1 = "<line-height=27.5%><size=60%>" + resultPercentage.ToString() + "<size=45%>%";
                     // Add Average Cut Score to 2nd Line if enabled
                     if (PluginConfig.Instance.EnableAvarageCutScore && !PluginConfig.Instance.EnableScorePercentageDifference)
                     {
@@ -111,7 +119,7 @@ namespace ScorePercentage.HarmonyPatches
 
                         //Build new ScoreText string
                         __instance._scoreText.text =
-                                "<line-height=30%><size=60%>" + ScoreFormatter.Format(modifiedScore) + "\n"
+                                "<line-height=27.5%><size=60%>" + ScoreFormatter.Format(modifiedScore) + "\n"
                                 + "<size=40%><color=" + scoreDifferenceColor + "><size=40%>" + positiveIndicator + scoreDifference;
                     }
 

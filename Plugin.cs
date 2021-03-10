@@ -17,6 +17,7 @@ namespace ScorePercentage
 //        internal static Ref<PluginConfig> config;
         internal static Harmony harmony;
         internal static ScorePercentageCommon scorePercentageCommon;
+
         public static Logger log { get; private set; }
 
         [Init]
