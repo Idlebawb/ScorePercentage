@@ -30,7 +30,7 @@ namespace ScorePercentage.HarmonyPatches
             if (__instance._levelCompletionResults.levelEndStateType == LevelCompletionResults.LevelEndStateType.Cleared)
             {
                 modifiedScore = __instance._levelCompletionResults.modifiedScore;
-                maxScore = ScorePercentageCommon.calculateMaxScore(__instance._difficultyBeatmap.beatmapData.cuttableNotesType);
+                maxScore = ScorePercentageCommon.calculateMaxScore(__instance._difficultyBeatmap.beatmapData.cuttableNotesCount);
 
 
                 //use modifiedScore with negative multipliers

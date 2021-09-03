@@ -20,7 +20,7 @@ namespace ScorePercentage.HarmonyPatches
                 {
                     Plugin.log.Debug("Condition 2 is true");
                     //calculate maximum possilble score
-                    int currentDifficultyMaxScore = ScorePercentageCommon.calculateMaxScore(__instance.selectedDifficultyBeatmap.beatmapData.cuttableNotesType);
+                    int currentDifficultyMaxScore = ScorePercentageCommon.calculateMaxScore(__instance.selectedDifficultyBeatmap.beatmapData.cuttableNotesCount);
                     //calculate actual score percentage
                     double currentDifficultyPercentageScore = ScorePercentageCommon.calculatePercentage(currentDifficultyMaxScore, playerLevelStatsData.highScore);
                     Plugin.scorePercentageCommon.currentPercentage = currentDifficultyPercentageScore;
