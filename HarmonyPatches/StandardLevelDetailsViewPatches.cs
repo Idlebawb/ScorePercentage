@@ -10,7 +10,7 @@ namespace ScorePercentage.HarmonyPatches
         
         static void Postfix(ref StandardLevelDetailViewPatches __instance)
         {
-            if (__instance._showPlayerStats && __instance._playerData != null)
+            if (__instance._playerData != null)
             {
                 PlayerLevelStatsData playerLevelStatsData = __instance._playerData.GetPlayerLevelStatsData(__instance._level.levelID, __instance._selectedDifficultyBeatmap.difficulty, __instance._selectedDifficultyBeatmap.parentDifficultyBeatmapSet.beatmapCharacteristic);
                 Plugin.scorePercentageCommon.currentScore = playerLevelStatsData.highScore;
