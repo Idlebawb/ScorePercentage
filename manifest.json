@@ -4,11 +4,11 @@
   "description": "Adds Score Percentage and Difference to Result Screen and Menu",
   "gameVersion": "1.19.0",
   "dependsOn": {
-    "BSIPA": "^4.2.0"
+    "BSIPA": "^4.2.1"
   },
   "id": "ScorePercentage",
   "name": "ScorePercentage",
-  "version": "1.4.8",
+  "version": "1.4.9",
   "features": [],
   "links": {
     "project-home": "https://github.com/Idlebawb/ScorePercentage/releases",

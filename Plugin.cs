@@ -44,7 +44,7 @@ namespace ScorePercentage
         public void OnApplicationQuit()
         {
             log.Debug("Stopping ScorePercentage Plugin");
-            harmony.UnpatchAll("com.Idlebob.BeatSaber.ScorePercentage");
+            harmony.UnpatchSelf();
         }
 
         public void OnFixedUpdate()
