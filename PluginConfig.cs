@@ -10,5 +10,6 @@
         public bool EnableScoreDifference { get; set; } = true;
         public bool EnableScorePercentageDifference { get; set; } = true;
 
+        public bool EnableMultiplayerSupport { get; set; } = true;
     }
 }

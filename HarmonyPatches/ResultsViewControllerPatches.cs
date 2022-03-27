@@ -30,7 +30,8 @@ namespace ScorePercentage.HarmonyPatches
             if (__instance._levelCompletionResults.levelEndStateType == LevelCompletionResults.LevelEndStateType.Cleared)
             {
                 modifiedScore = __instance._levelCompletionResults.modifiedScore;
-                maxScore = ScorePercentageCommon.calculateMaxScore(__instance._difficultyBeatmap.beatmapData.cuttableNotesCount);
+                //maxScore = ScorePercentageCommon.calculateMaxScore(__instance._difficultyBeatmap.beatmapData.cuttableNotesCount);
+                maxScore = ScoreModel.ComputeMaxMultipliedScoreForBeatmap(__instance._transformedBeatmapData);
 
 
                 //use modifiedScore with negative multipliers
@@ -47,7 +48,7 @@ namespace ScorePercentage.HarmonyPatches
                 //use rawScore without and with positive modifiers to avoid going over 100% without recalculating maxScore
                 else
                 {
-                    resultScore = __instance._levelCompletionResults.rawScore;
+                    resultScore = __instance._levelCompletionResults.multipliedScore;
                 }
                 
                 resultPercentage = ScorePercentageCommon.calculatePercentage(maxScore, resultScore);
@@ -63,14 +64,16 @@ namespace ScorePercentage.HarmonyPatches
                     //Set Percentage to first line
                     rankTextLine1 = "<line-height=27.5%><size=60%>" + resultPercentage.ToString() + "<size=45%>%";
                     // Add Average Cut Score to 2nd Line if enabled
+                    /* Disable Average Cut Score - Don't know how to handle new sliders
                     if (PluginConfig.Instance.EnableAvarageCutScore && !PluginConfig.Instance.EnableScorePercentageDifference)
                     {
                         int averageCutScore = __instance._levelCompletionResults.averageCutScore;
                         rankTextLine2 = "\n"+"<size=40%>" + averageCutScore.ToString() + "<size=30%> / <size=0%>115";
 
                     }
+                    */
                     // Add Percent Difference to 2nd Line if enabled and previous Score exists
-                    else if (PluginConfig.Instance.EnableScorePercentageDifference && Plugin.scorePercentageCommon.currentPercentage != 0)
+                    if (PluginConfig.Instance.EnableScorePercentageDifference && Plugin.scorePercentageCommon.currentPercentage != 0)
                     {
                         double currentPercentage = Plugin.scorePercentageCommon.currentPercentage;
                         double percentageDifference = Math.Round(resultPercentage - currentPercentage,2);
