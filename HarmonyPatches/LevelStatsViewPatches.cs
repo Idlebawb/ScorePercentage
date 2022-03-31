@@ -41,7 +41,8 @@ namespace ScorePercentage.HarmonyPatches
                 //Plugin.log.Debug("Running Postfix");
                 EnvironmentInfoSO currentEnvironmentInfoSO = difficultyBeatmap.GetEnvironmentInfo();
                 //Plugin.log.Debug("Got Environment Info");
-                IReadonlyBeatmapData currentReadonlyBeatmapData = await difficultyBeatmap.GetBeatmapDataAsync(currentEnvironmentInfoSO);
+                //IReadonlyBeatmapData currentReadonlyBeatmapData = await difficultyBeatmap.GetBeatmapDataAsync(currentEnvironmentInfoSO);
+                IReadonlyBeatmapData currentReadonlyBeatmapData = await difficultyBeatmap.GetBeatmapDataAsync(currentEnvironmentInfoSO, playerData.playerSpecificSettings);
                 //Plugin.log.Debug("Got BeatmapData");
                 int currentDifficultyMaxScore = ScoreModel.ComputeMaxMultipliedScoreForBeatmap(currentReadonlyBeatmapData);
                 //Plugin.log.Debug("Calculated Max Score: " + currentDifficultyMaxScore.ToString());
