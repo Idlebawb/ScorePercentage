@@ -1,5 +1,5 @@
 # ScorePercentage
-Replaces the "Rank" in Map Result Screen with score percentage and adds score percentage to the "Highscore" in the Level Selection Menu.
+Replaces the "Rank" in Map Result Screen with score percentage and adds score percentage to the "Highscore" in the Level Selection Menu below the Leaderboard.
 
 Since 1.2:
 Adds Score- and Percentage Difference to Result Screen, if you already had a score on the map / difficulty.
@@ -8,11 +8,13 @@ Adds Score- and Percentage Difference to Result Screen, if you already had a sco
 
 Examples:
 Map Result Screen
-![Level End Screen](https://i.imgur.com/KwFLswL.jpg)
+
+![Level End Screen](https://i.imgur.com/71K3EGN.png)
 
 
-Menu
-![Menu](https://i.imgur.com/7v8dYoo.jpg)
+Below Leaderboard
+
+![Menu](https://i.imgur.com/2lxclRO.png)
 
 
 Every Change this mod makes can be disabled / enabled one by one to fit your preferences.
@@ -36,9 +38,12 @@ This enables score percentage difference display on results (default: true)
 
 `"EnableScorePercentageDifference: true`
 
-This enables average cut score display on results (default:false)
 
-`"EnableAvarageCutScore: true`
+~~This enables average cut score display on results (default:false)~~
 
-AverageCutScore and ScorePercentageDifference are exclusive of each other. So if you enable both, percentage will take priority.
+~~`"EnableAvarageCutScore: true`~~
 
+~~AverageCutScore and ScorePercentageDifference are exclusive of each other. So if you enable both, percentage will take priority.~~
+
+
+AverageCutScore Option has been removed as of Version 1.4.11
