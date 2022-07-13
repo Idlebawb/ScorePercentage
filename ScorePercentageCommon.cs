@@ -10,7 +10,7 @@ namespace ScorePercentage
 
         public static double calculatePercentage(int maxScore, int resultScore)
         {
-            double resultPercentage = Math.Round((double)(100 / (double)maxScore * (double)resultScore),2);
+            double resultPercentage = (double)(100 / (double)maxScore * (double)resultScore);
             return resultPercentage;
         }
 

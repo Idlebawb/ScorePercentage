@@ -24,7 +24,7 @@ namespace ScorePercentage.HarmonyPatches
             string colorNegative = "#FF0000";
             //Empty for negatives, "+" for positives
             string positiveIndicator = "";
-            
+
 
             //Only calculate percentage, if map was successfully cleared
             if (__instance._levelCompletionResults.levelEndStateType == LevelCompletionResults.LevelEndStateType.Cleared)
@@ -35,9 +35,9 @@ namespace ScorePercentage.HarmonyPatches
 
 
                 //use modifiedScore with negative multipliers
-                if (__instance._levelCompletionResults.gameplayModifiers.noFailOn0Energy 
-                    || (__instance._levelCompletionResults.gameplayModifiers.enabledObstacleType != GameplayModifiers.EnabledObstacleType.All) 
-                    || __instance._levelCompletionResults.gameplayModifiers.noArrows 
+                if (__instance._levelCompletionResults.gameplayModifiers.noFailOn0Energy
+                    || (__instance._levelCompletionResults.gameplayModifiers.enabledObstacleType != GameplayModifiers.EnabledObstacleType.All)
+                    || __instance._levelCompletionResults.gameplayModifiers.noArrows
                     || __instance._levelCompletionResults.gameplayModifiers.noBombs
                     || __instance._levelCompletionResults.gameplayModifiers.zenMode
                     || __instance._levelCompletionResults.gameplayModifiers.songSpeed == GameplayModifiers.SongSpeed.Slower
@@ -50,7 +50,7 @@ namespace ScorePercentage.HarmonyPatches
                 {
                     resultScore = __instance._levelCompletionResults.multipliedScore;
                 }
-                
+
                 resultPercentage = ScorePercentageCommon.calculatePercentage(maxScore, resultScore);
 
                 //disable wrapping and autosize (unneccessary?)
@@ -62,21 +62,13 @@ namespace ScorePercentage.HarmonyPatches
                 if (PluginConfig.Instance.EnableLevelEndRank)
                 {
                     //Set Percentage to first line
-                    rankTextLine1 = "<line-height=27.5%><size=60%>" + resultPercentage.ToString() + "<size=45%>%";
-                    // Add Average Cut Score to 2nd Line if enabled
-                    /* Disable Average Cut Score - Don't know how to handle new sliders
-                    if (PluginConfig.Instance.EnableAvarageCutScore && !PluginConfig.Instance.EnableScorePercentageDifference)
-                    {
-                        int averageCutScore = __instance._levelCompletionResults.averageCutScore;
-                        rankTextLine2 = "\n"+"<size=40%>" + averageCutScore.ToString() + "<size=30%> / <size=0%>115";
+                    rankTextLine1 = "<line-height=27.5%><size=60%>" + Math.Round(resultPercentage, 2).ToString() + "<size=45%>%";
 
-                    }
-                    */
                     // Add Percent Difference to 2nd Line if enabled and previous Score exists
                     if (PluginConfig.Instance.EnableScorePercentageDifference && Plugin.scorePercentageCommon.currentPercentage != 0)
                     {
                         double currentPercentage = Plugin.scorePercentageCommon.currentPercentage;
-                        double percentageDifference = Math.Round(resultPercentage - currentPercentage,2);
+                        double percentageDifference = resultPercentage - currentPercentage;
                         string percentageDifferenceColor;
                         //Better or same Score
                         if (percentageDifference >= 0)
@@ -90,7 +82,7 @@ namespace ScorePercentage.HarmonyPatches
                             percentageDifferenceColor = colorNegative;
                             positiveIndicator = "";
                         }
-                        rankTextLine2 = "\n<color=" + percentageDifferenceColor + "><size=40%>" + positiveIndicator + percentageDifference.ToString() + "<size=30%>%";
+                        rankTextLine2 = "\n<color=" + percentageDifferenceColor + "><size=40%>" + positiveIndicator + Math.Round(percentageDifference,2).ToString() + "<size=30%>%";
                     }
                     __instance._newHighScoreText.SetActive(false);
                 }//End Preparations for Changes to Rank Text
@@ -137,6 +129,6 @@ namespace ScorePercentage.HarmonyPatches
 
 
         }//End Postfix Function
-        
+
     }//End Class
 }//End Namespace
