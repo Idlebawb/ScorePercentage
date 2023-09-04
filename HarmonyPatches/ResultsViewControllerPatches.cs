@@ -17,30 +17,32 @@ namespace ScorePercentage.HarmonyPatches
             int resultScore;
             int modifiedScore;
             // Default Rank Text
-            string rankTextLine1 = __instance._rankText.text;
+            string rankTextLine1 = Traverse.Create(__instance).Field("rankText.text").GetValue<String>(); // __instance._rankText.text;
             string rankTextLine2 = "";
             // Colors
             string colorPositive = "#00B300";
             string colorNegative = "#FF0000";
             //Empty for negatives, "+" for positives
             string positiveIndicator = "";
+            LevelCompletionResults levelCompletionResults = Traverse.Create(__instance).Field("_levelCompletionResults").GetValue<LevelCompletionResults>();
 
 
             //Only calculate percentage, if map was successfully cleared
-            if (__instance._levelCompletionResults.levelEndStateType == LevelCompletionResults.LevelEndStateType.Cleared)
+            if (levelCompletionResults.levelEndStateType == LevelCompletionResults.LevelEndStateType.Cleared)
             {
-                modifiedScore = __instance._levelCompletionResults.modifiedScore;
+                modifiedScore = levelCompletionResults.modifiedScore;
                 //maxScore = ScorePercentageCommon.calculateMaxScore(__instance._difficultyBeatmap.beatmapData.cuttableNotesCount);
-                maxScore = ScoreModel.ComputeMaxMultipliedScoreForBeatmap(__instance._transformedBeatmapData);
+                
+                maxScore = ScoreModel.ComputeMaxMultipliedScoreForBeatmap(Traverse.Create(__instance).Field("_transformedBeatmapData").GetValue<IReadonlyBeatmapData>());
 
 
                 //use modifiedScore with negative multipliers
-                if (__instance._levelCompletionResults.gameplayModifiers.noFailOn0Energy
-                    || (__instance._levelCompletionResults.gameplayModifiers.enabledObstacleType != GameplayModifiers.EnabledObstacleType.All)
-                    || __instance._levelCompletionResults.gameplayModifiers.noArrows
-                    || __instance._levelCompletionResults.gameplayModifiers.noBombs
-                    || __instance._levelCompletionResults.gameplayModifiers.zenMode
-                    || __instance._levelCompletionResults.gameplayModifiers.songSpeed == GameplayModifiers.SongSpeed.Slower
+                if (levelCompletionResults.gameplayModifiers.noFailOn0Energy
+                    || (levelCompletionResults.gameplayModifiers.enabledObstacleType != GameplayModifiers.EnabledObstacleType.All)
+                    || levelCompletionResults.gameplayModifiers.noArrows
+                    || levelCompletionResults.gameplayModifiers.noBombs
+                    || levelCompletionResults.gameplayModifiers.zenMode
+                    || levelCompletionResults.gameplayModifiers.songSpeed == GameplayModifiers.SongSpeed.Slower
                     )
                 {
                     resultScore = modifiedScore;
@@ -48,14 +50,14 @@ namespace ScorePercentage.HarmonyPatches
                 //use rawScore without and with positive modifiers to avoid going over 100% without recalculating maxScore
                 else
                 {
-                    resultScore = __instance._levelCompletionResults.multipliedScore;
+                    resultScore = levelCompletionResults.multipliedScore;
                 }
 
                 resultPercentage = ScorePercentageCommon.calculatePercentage(maxScore, resultScore);
 
                 //disable wrapping and autosize (unneccessary?)
-                __instance._rankText.autoSizeTextContainer = false;
-                __instance._rankText.enableWordWrapping = false;
+                Traverse.Create(__instance).Field("_rankText").Property("autoSizeTextContainer").SetValue(false);
+                Traverse.Create(__instance).Field("_rankText").Property("enableWordWrapping").SetValue(false);
 
 
                 //Rank Text Changes
@@ -81,13 +83,18 @@ namespace ScorePercentage.HarmonyPatches
                         {
                             percentageDifferenceColor = colorNegative;
                             positiveIndicator = "";
+                            //Fix negative score rounding to exactly 0% just showing 0% instead of -0%
+                            if (Math.Round(percentageDifference, 2) == 0)
+                            {
+                                positiveIndicator = "-";
+                            }
                         }
                         rankTextLine2 = "\n<color=" + percentageDifferenceColor + "><size=40%>" + positiveIndicator + Math.Round(percentageDifference,2).ToString() + "<size=30%>%";
                     }
-                    __instance._newHighScoreText.SetActive(false);
+                    Traverse.Create(__instance).Field("_newHighScoreText").Property("SetActive").SetValue(false);
                 }//End Preparations for Changes to Rank Text
 
-                __instance._rankText.text = rankTextLine1 + rankTextLine2;
+                Traverse.Create(__instance).Field("_rankText").Property("text").SetValue(rankTextLine1 + rankTextLine2);
 
 
                 //Add ScoreDifference Calculation if enabled
@@ -113,9 +120,10 @@ namespace ScorePercentage.HarmonyPatches
                         }
 
                         //Build new ScoreText string
-                        __instance._scoreText.text =
+                        Traverse.Create(__instance).Field("_scoreText").Property("text").SetValue(
                                 "<line-height=27.5%><size=60%>" + ScoreFormatter.Format(modifiedScore) + "\n"
-                                + "<size=40%><color=" + scoreDifferenceColor + "><size=40%>" + positiveIndicator + scoreDifference;
+                                + "<size=40%><color=" + scoreDifferenceColor + "><size=40%>" + positiveIndicator + scoreDifference
+                        );
                     }
 
                 }//End ScoreDifference Calculation

@@ -49,7 +49,9 @@ namespace ScorePercentage.HarmonyPatches
                 Plugin.scorePercentageCommon.currentPercentage = ScorePercentageCommon.calculatePercentage(currentDifficultyMaxScore, Plugin.scorePercentageCommon.currentScore);
                 //Plugin.log.Debug("Calculated Percentage");
                 //Plugin.log.Debug("Adding Percentage to HighscoreText");
-                __instance._highScoreText.text = Plugin.scorePercentageCommon.currentScore.ToString() + " " + "(" + Math.Round(Plugin.scorePercentageCommon.currentPercentage,2).ToString() + "%)";
+                
+                Traverse.Create(__instance).Field("_highScoreText").Property("text").SetValue(Plugin.scorePercentageCommon.currentScore.ToString() + " " + "(" + Math.Round(Plugin.scorePercentageCommon.currentPercentage, 2).ToString() + "%)");
+                // __instance._highScoreText.text = Plugin.scorePercentageCommon.currentScore.ToString() + " " + "(" + Math.Round(Plugin.scorePercentageCommon.currentPercentage,2).ToString() + "%)";
             }
         }
     }

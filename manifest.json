@@ -2,13 +2,13 @@
   "$schema": "https://raw.githubusercontent.com/nike4613/ModSaber-MetadataFileSchema/master/Schema.json",
   "author": "Idlebob",
   "description": "Adds Score Percentage and Difference to Result Screen and Menu",
-  "gameVersion": "1.21.0",
+  "gameVersion": "1.31.0",
     "dependsOn": {
-        "BSIPA": "^4.2.2"
+        "BSIPA": "^4.3.0"
     },
   "id": "ScorePercentage",
   "name": "ScorePercentage",
-  "version": "1.4.13",
+  "version": "1.4.15",
   "features": [],
   "links": {
     "project-home": "https://github.com/Idlebawb/ScorePercentage/releases",
