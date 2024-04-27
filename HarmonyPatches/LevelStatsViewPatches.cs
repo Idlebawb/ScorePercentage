@@ -1,20 +1,32 @@
 ﻿using HarmonyLib;
+using SiraUtil.Affinity;
 using System;
+using System.Threading;
 
 namespace ScorePercentage.HarmonyPatches
 {
-    [HarmonyPatch(typeof(LevelStatsView))]
-    [HarmonyPatch("ShowStats", MethodType.Normal)]
-    class LevelStatsViewPatches : LevelStatsView
+    class LevelStatsViewPatches : IAffinity
     {
-        static void Prefix(ref LevelStatsViewPatches __instance, IDifficultyBeatmap difficultyBeatmap, PlayerData playerData)
+        private readonly BeatmapLevelLoader _beatmapLevelLoader;
+        private readonly StandardLevelDetailViewController _standardLevelDetailViewController;
+        private readonly BeatmapDataLoader _beatmapDataLoader = new BeatmapDataLoader();
+
+        public LevelStatsViewPatches(BeatmapLevelLoader beatmapLevelLoader, StandardLevelDetailViewController standardLevelDetailViewController)
+        {
+            _beatmapLevelLoader = beatmapLevelLoader;
+            _standardLevelDetailViewController = standardLevelDetailViewController;
+        }
+
+        [AffinityPatch(typeof(LevelStatsView), nameof(LevelStatsView.ShowStats))]
+        [AffinityPrefix]
+        private void PrefixShowStats(LevelStatsViewPatches __instance, in BeatmapKey beatmapKey, PlayerData playerData)
         {
             //Update highScoreText, if enabled in Plugin Config
             if (PluginConfig.Instance.EnableMenuHighscore)
             {
                 if (playerData != null)
                 {
-                    PlayerLevelStatsData playerLevelStatsData = playerData.GetPlayerLevelStatsData(difficultyBeatmap.level.levelID, difficultyBeatmap.difficulty, difficultyBeatmap.parentDifficultyBeatmapSet.beatmapCharacteristic);
+                    PlayerLevelStatsData playerLevelStatsData = playerData.GetOrCreatePlayerLevelStatsData(beatmapKey);
 
                     //Prepare Data for LevelStatsView
                     if (playerLevelStatsData.validScore)
@@ -35,24 +47,34 @@ namespace ScorePercentage.HarmonyPatches
                 }
             }
         }
-        static async void Postfix(LevelStatsViewPatches __instance, IDifficultyBeatmap difficultyBeatmap, PlayerData playerData)
+
+        [AffinityPatch(typeof(LevelStatsView), nameof(LevelStatsView.ShowStats))]
+        [AffinityPostfix]
+        private void PostfixShowStats(LevelStatsViewPatches __instance, in BeatmapKey beatmapKey, PlayerData playerData)
         {
-            if (Plugin.scorePercentageCommon.currentScore != 0) { 
-                //Plugin.log.Debug("Running Postfix");
-                EnvironmentInfoSO currentEnvironmentInfoSO = difficultyBeatmap.GetEnvironmentInfo();
-                //Plugin.log.Debug("Got Environment Info");
-                //IReadonlyBeatmapData currentReadonlyBeatmapData = await difficultyBeatmap.GetBeatmapDataAsync(currentEnvironmentInfoSO);
-                IReadonlyBeatmapData currentReadonlyBeatmapData = await difficultyBeatmap.GetBeatmapDataAsync(currentEnvironmentInfoSO, playerData.playerSpecificSettings);
-                //Plugin.log.Debug("Got BeatmapData");
+            PostfixShowStatsAsync(__instance, beatmapKey, playerData);
+        }
+
+        async void PostfixShowStatsAsync(LevelStatsViewPatches __instance, BeatmapKey beatmapKey, PlayerData playerData)
+        {
+            if (Plugin.scorePercentageCommon.currentScore != 0)
+            {
+                Plugin.log.Debug("Running Postfix");
+
+                var beatmapLevel = _standardLevelDetailViewController.beatmapLevel;
+                var beatmapLevelData = await _beatmapLevelLoader.LoadBeatmapLevelDataAsync(beatmapLevel, CancellationToken.None);
+                var currentReadonlyBeatmapData = await _beatmapDataLoader.LoadBeatmapDataAsync(beatmapLevelData.beatmapLevelData, beatmapKey, beatmapLevel.beatsPerMinute, true, null, playerData.gameplayModifiers, playerData.playerSpecificSettings, false);
+
                 int currentDifficultyMaxScore = ScoreModel.ComputeMaxMultipliedScoreForBeatmap(currentReadonlyBeatmapData);
                 //Plugin.log.Debug("Calculated Max Score: " + currentDifficultyMaxScore.ToString());
                 Plugin.scorePercentageCommon.currentPercentage = ScorePercentageCommon.calculatePercentage(currentDifficultyMaxScore, Plugin.scorePercentageCommon.currentScore);
                 //Plugin.log.Debug("Calculated Percentage");
                 //Plugin.log.Debug("Adding Percentage to HighscoreText");
-                
+
                 Traverse.Create(__instance).Field("_highScoreText").Property("text").SetValue(Plugin.scorePercentageCommon.currentScore.ToString() + " " + "(" + Math.Round(Plugin.scorePercentageCommon.currentPercentage, 2).ToString() + "%)");
                 // __instance._highScoreText.text = Plugin.scorePercentageCommon.currentScore.ToString() + " " + "(" + Math.Round(Plugin.scorePercentageCommon.currentPercentage,2).ToString() + "%)";
             }
+
         }
     }
 }
