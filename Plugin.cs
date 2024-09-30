@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 using IPA.Logging;
 using HarmonyLib;
 using System;
+using SiraUtil.Zenject;
+using ScorePercentage.Installers;
 
 
 namespace ScorePercentage
@@ -21,12 +23,12 @@ namespace ScorePercentage
         public static Logger log { get; private set; }
 
         [Init]
-        public void Init(Logger logger, Config cfgProvider)
+        public void Init(Logger logger, Config cfgProvider, Zenjector zenjector)
         {
             //Logger.log = logger;
             log = logger;
             PluginConfig.Instance = cfgProvider.Generated<PluginConfig>();
-
+            zenjector.Install<MenuInstaller>(Location.Menu);
         }
 
         [OnStart]
